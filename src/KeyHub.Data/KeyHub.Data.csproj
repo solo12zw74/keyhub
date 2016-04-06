@@ -128,6 +128,10 @@
     <Compile Include="Migrations\201311212240155_RenameDomainLicenseColumn.Designer.cs">
       <DependentUpon>201311212240155_RenameDomainLicenseColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604061726035_UpdateToEF6.cs" />
+    <Compile Include="Migrations\201604061726035_UpdateToEF6.Designer.cs">
+      <DependentUpon>201604061726035_UpdateToEF6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\MigrationConfiguration.cs" />
     <Compile Include="Migrations\Internal\DbSeederMigrator.cs" />
     <Compile Include="Migrations\Internal\IMigrationDataSeeder.cs" />
@@ -161,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201311212240155_RenameDomainLicenseColumn.resx">
       <DependentUpon>201311212240155_RenameDomainLicenseColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604061726035_UpdateToEF6.resx">
+      <DependentUpon>201604061726035_UpdateToEF6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
