@@ -4,6 +4,7 @@ using KeyHub.Data.BusinessRules;
 using KeyHub.Model;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity;
 
 namespace KeyHub.BusinessLogic.BusinessRules
 {

@@ -1,26 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
-using System.Security.Principal;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using KeyHub.Model;
-using Microsoft.Ajax.Utilities;
 using Microsoft.Web.WebPages.OAuth;
 using KeyHub.Data;
 using KeyHub.Web.Models;
 using KeyHub.Web.ViewModels.User;
 using MvcFlash.Core;
 using WebMatrix.WebData;
-using Membership = System.Web.Security.Membership;
+using System.Data.Entity.Core;
 
 namespace KeyHub.Web.Controllers
 {
@@ -62,7 +56,7 @@ namespace KeyHub.Web.Controllers
         [Authorize(Roles = Role.SystemAdmin)]
         public ActionResult Create()
         {
-            var viewModel = new UserCreateViewModel(thisOne:true);
+            var viewModel = new UserCreateViewModel(thisOne: true);
             return View(viewModel);
         }
 
@@ -113,7 +107,7 @@ namespace KeyHub.Web.Controllers
 
                 if (!User.IsInRole(Role.SystemAdmin) && user.MembershipUserIdentifier != User.Identity.Name)
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
-                
+
                 var viewModel = new UserEditViewModel()
                 {
                     UserId = user.UserId,
@@ -250,7 +244,7 @@ namespace KeyHub.Web.Controllers
                 {
                     if (exception.Message.Contains("IX_Email") && exception.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError("", 
+                        ModelState.AddModelError("",
                             "The email address registered is already in use on this site using a different login method.  "
                             + "Please login with the original login method used for that email.  "
                             + "Then you may associate other login methods with your account.  ");
@@ -301,7 +295,7 @@ namespace KeyHub.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword))
+                if (WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword))
                 {
                     Flash.Success("Your password has been changed.");
                     return RedirectToAction("Index");
@@ -358,7 +352,7 @@ namespace KeyHub.Web.Controllers
             }
 
             //Login with authentication result
-            if(OAuthWebSecurity.Login(authenticationResult.Provider, authenticationResult.ProviderUserId, createPersistentCookie: true))
+            if (OAuthWebSecurity.Login(authenticationResult.Provider, authenticationResult.ProviderUserId, createPersistentCookie: true))
             {
                 return RedirectTo(returnUrl);
             }
@@ -415,7 +409,7 @@ namespace KeyHub.Web.Controllers
             OAuthWebSecurity.CreateOrUpdateAccount(authenticationResult.Provider, authenticationResult.ProviderUserId, membershipUserIdentifier);
             OAuthWebSecurity.Login(authenticationResult.Provider, authenticationResult.ProviderUserId, createPersistentCookie: true);
 
-            return RedirectTo(returnUrl);     
+            return RedirectTo(returnUrl);
         }
 
         /// <summary>
@@ -471,7 +465,7 @@ namespace KeyHub.Web.Controllers
 
         public ActionResult UnlinkLogin(string provider)
         {
-            return View(new UnlinkLoginModel() {Provider = provider});
+            return View(new UnlinkLoginModel() { Provider = provider });
         }
 
         [HttpPost, ValidateAntiForgeryToken, ActionName("UnlinkLogin")]
@@ -480,7 +474,7 @@ namespace KeyHub.Web.Controllers
             using (var context = dataContextFactory.Create())
             {
                 var model = LinkAccountModel.ForUser(context, User.Identity);
-                
+
                 if (!model.AllowRemovingLogin)
                 {
                     Flash.Error(
