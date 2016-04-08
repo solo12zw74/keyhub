@@ -19,10 +19,7 @@ namespace KeyHub.Model
         {
             get
             {
-                if (MembershipUserIdentifier == null)
-                    return false;
-
-                return Roles.IsUserInRole(MembershipUserIdentifier, Role.SystemAdmin);
+                return Roles.Any(r => Role.SystemAdmin == r.Name);
             }
         }
 

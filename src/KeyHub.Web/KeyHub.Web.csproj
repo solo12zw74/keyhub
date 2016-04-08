@@ -257,6 +257,7 @@
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Controllers\VendorCredentialController.cs" />
     <Compile Include="Extensions\SelectListExtensions.cs" />
+    <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

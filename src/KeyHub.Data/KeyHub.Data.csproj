@@ -98,11 +98,6 @@
     <Compile Include="Configuration\Application\TransactionItemConfiguration.cs" />
     <Compile Include="Configuration\Application\UserObjectRightConfiguration.cs" />
     <Compile Include="Configuration\Application\VendorConfiguration.cs" />
-    <Compile Include="Configuration\Membership\OAuthMembershipConfiguration.cs" />
-    <Compile Include="Configuration\Membership\MembershipConfiguration.cs" />
-    <Compile Include="Configuration\Membership\RoleConfiguration.cs" />
-    <Compile Include="Configuration\Membership\UserConfiguration.cs" />
-    <Compile Include="Configuration\Membership\UserInRoleConfiguration.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="DataContextByAuthorizedVendor.cs" />
     <Compile Include="AbstractFilteredDataContext.cs" />
@@ -137,6 +132,9 @@
     <Compile Include="Migrations\Internal\IMigrationDataSeeder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataContextByUser.cs" />
+    <Compile Include="SimpleMembershipDbContext.cs" />
+    <Compile Include="SimpleMembershipRoleStore.cs" />
+    <Compile Include="SimpleMembershipUserStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

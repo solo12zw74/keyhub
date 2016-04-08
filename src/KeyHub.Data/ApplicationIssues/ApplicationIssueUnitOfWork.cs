@@ -69,12 +69,12 @@ namespace KeyHub.Data.ApplicationIssues
                                   select l.ObjectId).ToList();
 
                 var licenseUsers = (from u in context.Users
-                                    join r in context.UserLicenseRights on u.UserId equals r.UserId
+                                    join r in context.UserLicenseRights on u.Id equals r.UserId
                                     where licenseIds.Contains(r.ObjectId)
                                     select u).ToList();
 
                 var customerUsers = (from u in context.Users
-                                    join r in context.UserCustomerRights on u.UserId equals r.UserId
+                                    join r in context.UserCustomerRights on u.Id equals r.UserId
                                     join c in context.Customers on r.ObjectId equals c.ObjectId
                                     join l in context.Licenses on c.ObjectId equals  l.OwningCustomerId
                                     where licenseIds.Contains(l.ObjectId)
