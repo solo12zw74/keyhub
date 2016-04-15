@@ -15,6 +15,7 @@ using KeyHub.Web.ViewModels.User;
 using MvcFlash.Core;
 using WebMatrix.WebData;
 using System.Data.Entity.Core;
+using Microsoft.AspNet.Identity;
 
 namespace KeyHub.Web.Controllers
 {
@@ -25,9 +26,11 @@ namespace KeyHub.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IDataContextFactory dataContextFactory;
-        public AccountController(IDataContextFactory dataContextFactory)
+        private readonly UserManager<User, int> userManager;
+        public AccountController(IDataContextFactory dataContextFactory, UserManager<User, int> userManager)
         {
             this.dataContextFactory = dataContextFactory;
+            this.userManager = userManager;
         }
 
         /// <summary>
@@ -71,19 +74,30 @@ namespace KeyHub.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
-                var newMembershipUserIdentifier = Guid.NewGuid().ToString();
 
-                WebSecurity.CreateUserAndAccount(newMembershipUserIdentifier, viewModel.User.Password, new { Email = viewModel.User.Email });
-
-                Flash.Success("New user succesfully created");
-
-                if (Url.IsLocalUrl(viewModel.RedirectUrl))
+                var user = new User() { Email = viewModel.User.Email };
+                var result = userManager.Create(user, viewModel.User.Password);
+                if (result.Succeeded)
                 {
-                    return Redirect(viewModel.RedirectUrl);
+                    Flash.Success("New user succesfully created");
+                    if (Url.IsLocalUrl(viewModel.RedirectUrl))
+                    {
+                        return Redirect(viewModel.RedirectUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    result
+                        .Errors
+                        .ToList()
+                        .ForEach(error => ModelState.AddModelError("", error));
+                    var newViewModel = new UserCreateViewModel(thisOne: true);
+                    return View(viewModel);
+
                 }
             }
 
@@ -141,6 +155,7 @@ namespace KeyHub.Web.Controllers
                     //Email can always be updated
                     user.Email = viewModel.Email;
                     context.SaveChanges();
+                    userManager.
 
                     return RedirectToAction("Index");
                 }
