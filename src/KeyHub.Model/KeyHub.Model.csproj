@@ -66,7 +66,6 @@
     <Compile Include="Definition\Application\CustomerAppIssue.cs" />
     <Compile Include="Definition\Application\TransactionStatus.cs" />
     <Compile Include="Definition\Membership\ExternalLogin.cs" />
-    <Compile Include="Definition\Membership\OAuthMembership.cs" />
     <Compile Include="Definition\Membership\PasswordLogin.cs" />
     <Compile Include="Definition\Membership\Rights\BelongToEntity.cs" />
     <Compile Include="Definition\Membership\Rights\EditLicenseInfo.cs" />
@@ -105,12 +104,8 @@
     <Compile Include="Definition\Membership\UserObjectRight.cs" />
     <Compile Include="Definition\Membership\UserVendorRight.cs" />
     <Compile Include="Definition\Application\Vendor.cs" />
-    <Compile Include="Definition\Membership\Membership.cs" />
     <Compile Include="Definition\Membership\Role.cs" />
     <Compile Include="Definition\Membership\User.cs" />
-    <Compile Include="Definition\Membership\UserInRole.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Logic\Application\Transaction.cs" />
     <Compile Include="Logic\Application\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

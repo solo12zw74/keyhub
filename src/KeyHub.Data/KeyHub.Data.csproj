@@ -99,11 +99,9 @@
     <Compile Include="Configuration\Application\UserObjectRightConfiguration.cs" />
     <Compile Include="Configuration\Application\VendorConfiguration.cs" />
     <Compile Include="Configuration\Membership\ExternalLoginConfiguration.cs" />
-    <Compile Include="Configuration\Membership\OAuthMembershipConfiguration.cs" />
     <Compile Include="Configuration\Membership\PasswordLoginConfiguration.cs" />
     <Compile Include="Configuration\Membership\RoleConfiguration.cs" />
     <Compile Include="Configuration\Membership\UserConfiguration.cs" />
-    <Compile Include="Configuration\Membership\UserInRoleConfiguration.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="DataContextByAuthorizedVendor.cs" />
     <Compile Include="AbstractFilteredDataContext.cs" />
@@ -132,6 +130,10 @@
     <Compile Include="Migrations\201604061726035_UpdateToEF6.cs" />
     <Compile Include="Migrations\201604061726035_UpdateToEF6.Designer.cs">
       <DependentUpon>201604061726035_UpdateToEF6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604151833129_MigrateToIdentity2.cs" />
+    <Compile Include="Migrations\201604151833129_MigrateToIdentity2.Designer.cs">
+      <DependentUpon>201604151833129_MigrateToIdentity2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\MigrationConfiguration.cs" />
     <Compile Include="Migrations\Internal\DbSeederMigrator.cs" />
@@ -171,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604061726035_UpdateToEF6.resx">
       <DependentUpon>201604061726035_UpdateToEF6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604151833129_MigrateToIdentity2.resx">
+      <DependentUpon>201604151833129_MigrateToIdentity2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

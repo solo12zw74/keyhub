@@ -21,6 +21,7 @@ namespace KeyHub.Data.DataConfiguration
             HasMany(x => x.Rights)
                 .WithRequired(x => x.User)
                 .WillCascadeOnDelete(true);
+            Ignore(p => p.UserName);
             HasMany(u => u.Roles).WithMany(r => r.Users).Map((config) =>
             {
                 config
