@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KeyHub.Core.Data;
+﻿using KeyHub.Core.Data;
 using KeyHub.Model;
+using System.Data.Entity.ModelConfiguration;
 
 namespace KeyHub.Data.DataConfiguration
 {
@@ -23,7 +17,9 @@ namespace KeyHub.Data.DataConfiguration
         {
             ToTable("webpages_Roles");
 
-            HasMany(x => x.UsersInRoles).WithRequired(x => x.Role).WillCascadeOnDelete(false);
+            //HasMany(x => x.UsersInRoles).WithRequired(x => x.Role).WillCascadeOnDelete(false);
+            Property(r => r.Id).HasColumnName("RoleId");
+            Property(r => r.Name).HasColumnName("RoleName");
         }
 
         public void AddConfiguration(System.Data.Entity.ModelConfiguration.Configuration.ConfigurationRegistrar registrar)

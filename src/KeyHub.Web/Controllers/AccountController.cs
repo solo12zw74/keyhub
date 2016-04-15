@@ -39,9 +39,9 @@ namespace KeyHub.Web.Controllers
             using (var context = dataContextFactory.CreateByUser())
             {
                 // Eager loading users (except current user) and roles
-                var usersQuery = (from u in context.Users where u.MembershipUserIdentifier != User.Identity.Name select u)
+                var usersQuery = (from u in context.Users where u.Email != User.Identity.Name select u)
                                  .Include(u => u.Rights.Select(r => r.RightObject))
-                                 .OrderBy(u => u.MembershipUserIdentifier);
+                                 .OrderBy(u => u.Email);
 
                 var viewModel = new UserIndexViewModel(context.GetUser(HttpContext.User.Identity), usersQuery.ToList());
 
@@ -100,17 +100,17 @@ namespace KeyHub.Web.Controllers
         {
             using (var context = dataContextFactory.Create())
             {
-                var user = context.Users.FirstOrDefault(x => x.UserId == id);
+                var user = context.Users.FirstOrDefault(x => x.Id == id);
 
                 if (user == null)
                     return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-                if (!User.IsInRole(Role.SystemAdmin) && user.MembershipUserIdentifier != User.Identity.Name)
+                if (!User.IsInRole(Role.SystemAdmin) && user.Email != User.Identity.Name)
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
                 var viewModel = new UserEditViewModel()
                 {
-                    UserId = user.UserId,
+                    UserId = user.Id,
                     Email = user.Email
                 };
 
@@ -130,12 +130,12 @@ namespace KeyHub.Web.Controllers
             {
                 using (var context = dataContextFactory.Create())
                 {
-                    var user = context.Users.FirstOrDefault(x => x.UserId == viewModel.UserId);
+                    var user = context.Users.FirstOrDefault(x => x.Id == viewModel.UserId);
 
                     if (user == null)
                         return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-                    if (!User.IsInRole(Role.SystemAdmin) && user.MembershipUserIdentifier != User.Identity.Name)
+                    if (!User.IsInRole(Role.SystemAdmin) && user.Email != User.Identity.Name)
                         return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
                     //Email can always be updated
@@ -178,7 +178,7 @@ namespace KeyHub.Web.Controllers
 
                     if (user != null)
                     {
-                        if (WebSecurity.Login(user.MembershipUserIdentifier, model.Password, persistCookie: model.RememberMe))
+                        if (WebSecurity.Login(user.Email, model.Password, persistCookie: model.RememberMe))
                         {
                             if (Url.IsLocalUrl(returnUrl))
                             {
@@ -376,7 +376,7 @@ namespace KeyHub.Web.Controllers
                 using (var db = dataContextFactory.Create())
                 {
                     // Insert name into the profile table
-                    db.Users.Add(new User { MembershipUserIdentifier = membershipUserIdentifier, Email = authenticationResult.UserName });
+                    db.Users.Add(new User { Email = authenticationResult.UserName });
                     db.SaveChanges();
                 }
             }

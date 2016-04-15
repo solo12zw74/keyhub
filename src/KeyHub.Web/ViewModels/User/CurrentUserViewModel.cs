@@ -23,7 +23,7 @@ namespace KeyHub.Web.ViewModels.User
         /// <param name="user">User that this viewmodel represents</param>
         public CurrentUserViewModel(Model.User user)
         {
-            this.UserId = user.UserId;
+            this.UserId = user.Id;
             this.Email = user.Email;
             this.IsSystemAdmin = user.IsSystemAdmin;
             this.IsVendorAdmin = user.IsVendorAdmin;

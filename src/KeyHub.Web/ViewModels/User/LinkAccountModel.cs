@@ -21,11 +21,11 @@ namespace KeyHub.Web.ViewModels.User
             var allProviders = OAuthWebSecurity.RegisteredClientData.Select(c => c.DisplayName).ToArray();
 
             //  Match each linked provider to the member of allProviders as allProviders has proper casing (Google, not google)
-            var linkedProviders = OAuthWebSecurity.GetAccountsFromUserName(user.MembershipUserIdentifier)
+            var linkedProviders = OAuthWebSecurity.GetAccountsFromUserName(user.Email)
                 .Select(lp => allProviders.Single(ap => ap.ToLower() == lp.Provider.ToLower()))
                 .ToArray();
 
-            var loginMethodCount = linkedProviders.Count() + (OAuthWebSecurity.HasLocalAccount(user.UserId) ? 1 : 0);
+            var loginMethodCount = linkedProviders.Count() + (OAuthWebSecurity.HasLocalAccount(user.Id) ? 1 : 0);
 
             var model = new LinkAccountModel()
             {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web.Security;
+﻿using System.Linq;
 
 namespace KeyHub.Model
 {
@@ -19,10 +14,10 @@ namespace KeyHub.Model
         {
             get
             {
-                if (MembershipUserIdentifier == null)
+                if (Email == null)
                     return false;
 
-                return Roles.IsUserInRole(MembershipUserIdentifier, Role.SystemAdmin);
+                return Roles.Any(r => r.Name.Equals(Role.SystemAdmin));
             }
         }
 

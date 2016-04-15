@@ -74,7 +74,7 @@ namespace KeyHub.Web.Controllers
                         throw new NotImplementedException("ObjectType not known");
                 }
 
-                userObjectRight.User = (from x in context.Users where x.UserId == userId select x).FirstOrDefault();
+                userObjectRight.User = (from x in context.Users where x.Id == userId select x).FirstOrDefault();
                 userObjectRight.UserId = userId;
                 userObjectRight.Right = right;
                 userObjectRight.RightId = right.RightId;
@@ -147,7 +147,7 @@ namespace KeyHub.Web.Controllers
                     RightId = rightId,
                     ObjectId = objectId,
                     Type = type,
-                    UserEmail = context.Users.Single(u => u.UserId == userId).Email
+                    UserEmail = context.Users.Single(u => u.Id == userId).Email
                 };
 
                 switch (type)
