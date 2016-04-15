@@ -23,9 +23,9 @@ namespace KeyHub.Web.ViewModels.User
         /// <param name="user">User that this viewmodel represents</param>
         public UserViewModel(Model.User user):this()
         {
-            this.UserId = user.Id;
+            this.UserId = user.UserId;
             this.Email = user.Email;
-            this.HasLocalAccount = OAuthWebSecurity.HasLocalAccount(user.Id);
+            this.HasLocalAccount = OAuthWebSecurity.HasLocalAccount(user.UserId);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace KeyHub.Web.ViewModels.User
         {
             Model.User current = original ?? new Model.User();
 
-            current.Id = this.UserId;
+            current.UserId = this.UserId;
             current.Email = this.Email;
 
             return current;

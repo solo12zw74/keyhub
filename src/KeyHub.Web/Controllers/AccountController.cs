@@ -39,9 +39,9 @@ namespace KeyHub.Web.Controllers
             using (var context = dataContextFactory.CreateByUser())
             {
                 // Eager loading users (except current user) and roles
-                var usersQuery = (from u in context.Users where u.Email != User.Identity.Name select u)
+                var usersQuery = (from u in context.Users where u.MembershipUserIdentifier != User.Identity.Name select u)
                                  .Include(u => u.Rights.Select(r => r.RightObject))
-                                 .OrderBy(u => u.Email);
+                                 .OrderBy(u => u.MembershipUserIdentifier);
 
                 var viewModel = new UserIndexViewModel(context.GetUser(HttpContext.User.Identity), usersQuery.ToList());
 
@@ -71,9 +71,9 @@ namespace KeyHub.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
-                var newEmail = Guid.NewGuid().ToString();
+                var newMembershipUserIdentifier = Guid.NewGuid().ToString();
 
-                WebSecurity.CreateUserAndAccount(newEmail, viewModel.User.Password, new { Email = viewModel.User.Email });
+                WebSecurity.CreateUserAndAccount(newMembershipUserIdentifier, viewModel.User.Password, new { Email = viewModel.User.Email });
 
                 Flash.Success("New user succesfully created");
 
@@ -100,17 +100,17 @@ namespace KeyHub.Web.Controllers
         {
             using (var context = dataContextFactory.Create())
             {
-                var user = context.Users.FirstOrDefault(x => x.Id == id);
+                var user = context.Users.FirstOrDefault(x => x.UserId == id);
 
                 if (user == null)
                     return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-                if (!User.IsInRole(Role.SystemAdmin) && user.Email != User.Identity.Name)
+                if (!User.IsInRole(Role.SystemAdmin) && user.MembershipUserIdentifier != User.Identity.Name)
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
                 var viewModel = new UserEditViewModel()
                 {
-                    UserId = user.Id,
+                    UserId = user.UserId,
                     Email = user.Email
                 };
 
@@ -130,12 +130,12 @@ namespace KeyHub.Web.Controllers
             {
                 using (var context = dataContextFactory.Create())
                 {
-                    var user = context.Users.FirstOrDefault(x => x.Id == viewModel.UserId);
+                    var user = context.Users.FirstOrDefault(x => x.UserId == viewModel.UserId);
 
                     if (user == null)
                         return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-                    if (!User.IsInRole(Role.SystemAdmin) && user.Email != User.Identity.Name)
+                    if (!User.IsInRole(Role.SystemAdmin) && user.MembershipUserIdentifier != User.Identity.Name)
                         return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
                     //Email can always be updated
@@ -178,7 +178,7 @@ namespace KeyHub.Web.Controllers
 
                     if (user != null)
                     {
-                        if (WebSecurity.Login(user.Email, model.Password, persistCookie: model.RememberMe))
+                        if (WebSecurity.Login(user.MembershipUserIdentifier, model.Password, persistCookie: model.RememberMe))
                         {
                             if (Url.IsLocalUrl(returnUrl))
                             {
@@ -233,12 +233,12 @@ namespace KeyHub.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newEmail = Guid.NewGuid().ToString();
+                var newMembershipUserIdentifier = Guid.NewGuid().ToString();
 
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(newEmail, model.Password, new { Email = model.Email });
+                    WebSecurity.CreateUserAndAccount(newMembershipUserIdentifier, model.Password, new { Email = model.Email });
                 }
                 catch (Exception exception)
                 {
@@ -254,7 +254,7 @@ namespace KeyHub.Web.Controllers
                     throw;
                 }
 
-                if (WebSecurity.Login(newEmail, model.Password))
+                if (WebSecurity.Login(newMembershipUserIdentifier, model.Password))
                 {
                     if (Url.IsLocalUrl(returnUrl))
                     {
@@ -368,7 +368,7 @@ namespace KeyHub.Web.Controllers
                 return RedirectTo(returnUrl);
             }
 
-            var Email = Guid.NewGuid().ToString();
+            var membershipUserIdentifier = Guid.NewGuid().ToString();
 
             try
             {
@@ -376,7 +376,7 @@ namespace KeyHub.Web.Controllers
                 using (var db = dataContextFactory.Create())
                 {
                     // Insert name into the profile table
-                    db.Users.Add(new User { Email = authenticationResult.UserName });
+                    db.Users.Add(new User { MembershipUserIdentifier = membershipUserIdentifier, Email = authenticationResult.UserName });
                     db.SaveChanges();
                 }
             }
@@ -406,7 +406,7 @@ namespace KeyHub.Web.Controllers
                 }
             }
 
-            OAuthWebSecurity.CreateOrUpdateAccount(authenticationResult.Provider, authenticationResult.ProviderUserId, Email);
+            OAuthWebSecurity.CreateOrUpdateAccount(authenticationResult.Provider, authenticationResult.ProviderUserId, membershipUserIdentifier);
             OAuthWebSecurity.Login(authenticationResult.Provider, authenticationResult.ProviderUserId, createPersistentCookie: true);
 
             return RedirectTo(returnUrl);

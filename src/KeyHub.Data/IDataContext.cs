@@ -8,6 +8,8 @@ namespace KeyHub.Data
 {
     public interface IDataContext : IDisposable
     {
+        IDbSet<Membership> Memberships { get; set; }
+        IDbSet<Role> Roles { get; set; }
         IDbSet<User> Users { get; set; }
         IDbSet<Country> Countries { get; set; }
         IDbSet<Feature> Features { get; set; }

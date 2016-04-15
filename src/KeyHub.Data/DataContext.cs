@@ -60,12 +60,16 @@ namespace KeyHub.Data
             User currentUser = null;
             if (identity.IsAuthenticated)
             {
-                currentUser = (from x in this.Users where x.Email == identity.Name select x).Include(x => x.Rights).FirstOrDefault();
+                currentUser = (from x in this.Users where x.MembershipUserIdentifier == identity.Name select x).Include(x => x.Rights).FirstOrDefault();
             }
 
             return currentUser ?? new User();
         }
-        
+
+        public IDbSet<Membership> Memberships { get; set; }
+
+        public IDbSet<Role> Roles { get; set; }
+
         public IDbSet<User> Users { get; set; }
 
         public IDbSet<Country> Countries { get; set; }

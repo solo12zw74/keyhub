@@ -115,7 +115,7 @@ namespace KeyHub.BusinessLogic.Basket
                     {
                         RightObject = purchasingCustomer,
                         RightId = EditEntityMembers.Id,
-                        UserId = currentUser.Id
+                        UserId = currentUser.UserId
                     });
                     context.SaveChanges();
                 }
@@ -134,7 +134,7 @@ namespace KeyHub.BusinessLogic.Basket
                         {
                             RightObject = owningCustomer,
                             RightId = EditEntityInfo.Id,
-                            UserId = currentUser.Id
+                            UserId = currentUser.UserId
                         });
                         context.SaveChanges();
                     }
